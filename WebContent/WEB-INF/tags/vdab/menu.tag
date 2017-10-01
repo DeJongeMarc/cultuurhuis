@@ -1,17 +1,13 @@
 <%@ tag description='menu' pageEncoding='UTF-8'%>
+<%@attribute name='title' required="true" type="java.lang.String"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <nav>
 	<ul>
-		<li><a href="<c:url value='/genres.htm'/>">Circustheater</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Dans</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Familievoorstelling</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Humor</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Modern klassiek</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Multimedia</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Muziek</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Muziektheater</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Theater</a></li>
-		<li><a href="<c:url value='/genres.htm'/>">Wereldmuziek</a></li>
+		<c:forEach var='genre' items='${genres}'>
+		<li><a href="<c:url value='/'/>" name='id' value='${genre.id}'>${genre.naam}</a></li>
+			<!--  <li><label><input type='checkbox' name='id'
+					value='${genre.id}'> <c:out value='${genre.naam}' /></label></li>-->
+		</c:forEach>
 	</ul>
 </nav>
 
