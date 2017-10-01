@@ -51,9 +51,7 @@ public class GenreRepository extends AbstractRepository {
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					genre = resultSetRijNaarGenre(resultSet);
-				} else {
-					
-				}
+				} 
 			}
 			connection.commit();
 			return genre;
