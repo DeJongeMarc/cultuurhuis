@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingRepository;
+import be.vdab.utils.StringUtils;
 
 /**
  * Servlet implementation class ReservatieServlet
@@ -30,10 +31,15 @@ public class ReservatieServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		long voorstellingId = Long.parseLong(request.getParameter("voorstelling_id"));
-		Voorstelling voorstelling = voorstellingRepository.readOne(voorstellingId);
-		request.setAttribute("voorstellingReserveren", voorstelling);
+		String voorstellingId = request.getParameter("voorstelling_id");
+		if (StringUtils.isLong(voorstellingId)) {
+			long voorstellingIdLong = Long.parseLong(voorstellingId);
+			Voorstelling voorstelling = voorstellingRepository.readOne(voorstellingIdLong);
+			request.setAttribute("voorstellingReserveren", voorstelling);
+		} else {
+			request.setAttribute("fout", "VoorstellingId niet correct");
+		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
-	
 }
+

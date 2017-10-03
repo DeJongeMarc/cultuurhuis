@@ -11,6 +11,26 @@
 </head>
 <body>
 <vdab:header image="reserveren" title="reserveren"/>
-
+<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
+<c:choose>
+<c:when test="${not empty fout}">
+<div class='fout'>${fout}</div>
+</c:when>
+<c:when test="${empty voorstellingReserveren}">
+<div class='fout'>Geen voorstellingen beschikbaar</div>
+</c:when>
+<c:otherwise>
+<p>Voorstellingen:</p>
+<c:out value='${voorstellingReserveren.titel}'/>
+<p>Uitvoerders:</p>
+<c:out value='${voorstellingReserveren.uitvoerders}'/>
+<p>Datum:</p>
+<c:out value='${voorstellingReserveren.datum}'/>
+<p>Prijs:</p>
+<c:out value='€${voorstellingReserveren.prijs}'/>
+<p>Vrije plaatsen:</p>
+<c:out value='${voorstellingReserveren.vrijePlaatsen}'/>
+</c:otherwise>
+</c:choose>
 </body>
 </html>

@@ -14,7 +14,7 @@ import be.vdab.entities.Voorstelling;
 public class VoorstellingRepository extends AbstractRepository {
 	private static final String BEGIN_SELECT = "select id, titel, uitvoerders, datum, genreId, prijs, vrijePlaatsen from voorstellingen ";
 	private static final String READ = BEGIN_SELECT + "where genreid = ? and datum > {fn now()} order by datum";
-	private static final String READ_ONE = BEGIN_SELECT + "where genreid = ?";
+	private static final String READ_ONE = BEGIN_SELECT + "where id = ?";
 	private final static Logger LOGGER = Logger.getLogger(GenreRepository.class.getName());
 
 	public List<Voorstelling> read(long id) {

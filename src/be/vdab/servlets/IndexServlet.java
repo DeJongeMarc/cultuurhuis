@@ -15,6 +15,7 @@ import be.vdab.entities.Genre;
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.GenreRepository;
 import be.vdab.repositories.VoorstellingRepository;
+import be.vdab.utils.StringUtils;
 
 /**
  * Servlet implementation class IndexServlet
@@ -37,12 +38,17 @@ public class IndexServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setAttribute("genres", genreRepository.findAll());
-		if (request.getParameterValues("genre_id") != null) {
-			long genreId = Long.parseLong(request.getParameter("genre_id"));
-			Genre genre = genreRepository.read(genreId);	
-			request.setAttribute("genreNaam", genre.getNaam());
-			List<Voorstelling> listVoorstellingen = voorstellingRepository.read(genreId);
-			request.setAttribute("genreVoorstellingen",listVoorstellingen );
+		String genreId = request.getParameter("genre_id");
+		if ( genreId != null) {
+			if (StringUtils.isLong(genreId)) {
+				long genreIdLong = Long.parseLong(genreId);
+				Genre genre = genreRepository.read(genreIdLong);	
+				request.setAttribute("genreNaam", genre.getNaam());
+				List<Voorstelling> listVoorstellingen = voorstellingRepository.read(genreIdLong);
+				request.setAttribute("genreVoorstellingen",listVoorstellingen );
+			} else {
+				request.setAttribute("fout", "GenreId niet correct");
+			}
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
