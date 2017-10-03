@@ -15,10 +15,10 @@ import be.vdab.repositories.VoorstellingRepository;
 import be.vdab.utils.StringUtils;
 
 /**
- * Servlet implementation class ReservatieServlet
+ * Servlet implementation class ReserverenServlet
  */
-@WebServlet(name = "ReserverenServlet", urlPatterns = { "/reserveren.htm" })
-public class ReservatieServlet extends HttpServlet {
+@WebServlet("/reserveren.htm")
+public class ReserverenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/reserveren.jsp";
 	private final transient VoorstellingRepository voorstellingRepository = new VoorstellingRepository();

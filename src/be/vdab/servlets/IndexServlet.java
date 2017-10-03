@@ -42,10 +42,15 @@ public class IndexServlet extends HttpServlet {
 		if ( genreId != null) {
 			if (StringUtils.isLong(genreId)) {
 				long genreIdLong = Long.parseLong(genreId);
-				Genre genre = genreRepository.read(genreIdLong);	
-				request.setAttribute("genreNaam", genre.getNaam());
-				List<Voorstelling> listVoorstellingen = voorstellingRepository.read(genreIdLong);
-				request.setAttribute("genreVoorstellingen",listVoorstellingen );
+				Genre genre = genreRepository.read(genreIdLong);
+				if (genre != null) {
+					request.setAttribute("genreNaam", genre.getNaam());
+					List<Voorstelling> listVoorstellingen = voorstellingRepository.read(genreIdLong);
+					request.setAttribute("genreVoorstellingen", listVoorstellingen );
+				} else {
+					request.setAttribute("fout", "GenreId niet correct");
+				}
+				
 			} else {
 				request.setAttribute("fout", "GenreId niet correct");
 			}
