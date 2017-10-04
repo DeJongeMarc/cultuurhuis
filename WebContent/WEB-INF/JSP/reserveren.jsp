@@ -20,7 +20,8 @@
 <div class='fout'>Geen voorstellingen beschikbaar</div>
 </c:when>
 <c:otherwise>
-<p>Voorstellingen:</p>
+
+<p>Voorstelling:</p>
 <c:out value='${voorstellingReserveren.titel}'/>
 <p>Uitvoerders:</p>
 <c:out value='${voorstellingReserveren.uitvoerders}'/>
