@@ -11,6 +11,10 @@
 </head>
 <body>
 	<vdab:header title='voorstellingen' image='voorstellingen' />
+	<c:if test="${mandjeAanwezig}">
+	<a href="<c:url value="/reservatiemandje.htm"/>">Reservatiemandje</a>
+	<a href="<c:url value="/bevestiging.htm"/>">Bevestig reservatie</a>
+	</c:if>
 	<h2>Genres</h2>
 	<nav>
 		<ul>
@@ -24,9 +28,9 @@
 		<c:when test="${not empty fout}">
 			<div class='fout'>${fout}</div>
 		</c:when>
-		<c:when test="${not empty genreNaam}">
+		<c:when test="${not empty genre}">
 			<h2>
-				<c:out value='${genreNaam} ' />
+				<c:out value='${genre.naam} ' />
 				voorstellingen
 			</h2>
 			<c:choose>

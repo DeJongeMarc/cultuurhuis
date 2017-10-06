@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,17 +41,19 @@ public class GenreRepository extends AbstractRepository {
 		return new Genre(resultSet.getLong("id"), resultSet.getString("naam"));
 	}
 	
-	public Genre read(long id) {
+	public Optional<Genre> read(long id) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(READ)) {
-			Genre genre=null;
+			Optional<Genre>genre;
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			connection.setAutoCommit(false);
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
-					genre = resultSetRijNaarGenre(resultSet);
-				} 
+					genre = Optional.of(resultSetRijNaarGenre(resultSet));
+				} else {
+					genre = Optional.empty();
+				}
 			}
 			connection.commit();
 			return genre;

@@ -39,18 +39,21 @@ public class ReserverenServlet extends HttpServlet {
 		String voorstellingId = request.getParameter("voorstelling_id");
 		if (StringUtils.isLong(voorstellingId)) {
 			long voorstellingIdLong = Long.parseLong(voorstellingId);
-			Voorstelling voorstelling = voorstellingRepository.readOne(voorstellingIdLong);
-			request.setAttribute("voorstellingReserveren", voorstelling);
+			voorstellingRepository.read(voorstellingIdLong).ifPresent(voorstelling -> request.setAttribute("voorstellingReserveren", voorstelling));;
 			HttpSession session = request.getSession(false);
-			if (session != null) {
+			Voorstelling voorstelling = (Voorstelling) request.getAttribute("voorstellingReserveren");
+			if (session != null && voorstelling != null) {
 				@SuppressWarnings("unchecked")
-				Map<Long, Long> mandje = (Map<Long, Long>) session.getAttribute(MANDJE);
+				Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
 				if (mandje != null) {
-					request.setAttribute("reservatiesInMandje", mandje);
+					if (mandje.get(voorstelling.getId()) != null) {
+						int plaatsen = mandje.get(voorstelling.getId());
+						request.setAttribute("aantalPlaatsen", plaatsen);
+					}
 				}
 			}
 		} else {
-			request.setAttribute("foutId", "VoorstellingId niet correct");
+			request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
@@ -61,35 +64,42 @@ public class ReserverenServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String aantalPlaatsen = request.getParameter("aantalPlaatsen");
 		String reservatieId = request.getParameter("reservatie_id");
-		long reservatieIdLong = Long.parseLong(reservatieId);
-		System.out.println("aantalplaatsen--" + aantalPlaatsen);
-		System.out.println("reservatieID--" + reservatieId);
-		Voorstelling voorstelling = voorstellingRepository.readOne(reservatieIdLong);
-		System.out.println("reservatie titel--"+voorstelling.getTitel());
-		if (StringUtils.isInteger(aantalPlaatsen)) {
-			int aantalPlaatsenInt = Integer.parseInt(aantalPlaatsen);
-			if (aantalPlaatsenInt > 0 && aantalPlaatsenInt <= voorstelling.getVrijePlaatsen()) {
-				HttpSession session = request.getSession();
-				@SuppressWarnings("unchecked")
-				Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-				if (mandje == null) {
-					mandje = new LinkedHashMap<>();
-				}
-				mandje.put(voorstelling.getId(), aantalPlaatsenInt);
-				session.setAttribute(MANDJE, mandje);
-				request.setAttribute("voorstellingReserveren", voorstelling);
-				response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
-			} else {
-				request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
-				request.setAttribute("voorstellingReserveren", voorstelling);
-				request.getRequestDispatcher(VIEW).forward(request, response);
+		if (StringUtils.isLong(reservatieId)) {
+			long reservatieIdLong = Long.parseLong(reservatieId);
+			/*Optional<Voorstelling> optionalVoorstelling = voorstellingRepository.read(reservatieIdLong);*/
+			
+			Voorstelling voorstelling = voorstellingRepository.read(reservatieIdLong).get();
+			request.setAttribute("voorstellingReserveren", voorstelling);
+			if (voorstelling != null) {
+				if (StringUtils.isInteger(aantalPlaatsen)) {
+					int aantalPlaatsenInt = Integer.parseInt(aantalPlaatsen);
+					if (aantalPlaatsenInt > 0 && aantalPlaatsenInt <= voorstelling.getVrijePlaatsen()) {
+						HttpSession session = request.getSession();
+						@SuppressWarnings("unchecked")
+						Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+						if (mandje == null) {
+							mandje = new LinkedHashMap<>();
+						}
+						mandje.put(voorstelling.getId(), aantalPlaatsenInt);
+						session.setAttribute(MANDJE, mandje);
+						response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
+					} else {
+						request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
+						request.getRequestDispatcher(VIEW).forward(request, response);
+					}
+					
+				} else {
+					request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
+					request.getRequestDispatcher(VIEW).forward(request, response);
 			}
 			
+			} else {
+				request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
+				request.getRequestDispatcher(VIEW).forward(request, response);
+			}
 		} else {
-			request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
-			request.setAttribute("voorstellingReserveren", voorstelling);
+			request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
-		
 	}
 }

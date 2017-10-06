@@ -17,7 +17,8 @@
 			<div class='fout'>${foutId}</div>
 		</c:when>
 		<c:when test="${empty voorstellingReserveren}">
-			<div class='fout'>Geen voorstellingen beschikbaar</div>
+			<div class='fout'>Geen voorstellingen beschikbaar, kies een
+				andere voorstelling.</div>
 		</c:when>
 		<c:otherwise>
 			<p>Voorstelling:</p>
@@ -31,15 +32,21 @@
 			<p>Vrije plaatsen:</p>
 			<c:out value='${voorstellingReserveren.vrijePlaatsen}' />
 			<form method="post" id="reserverenform">
-				<label>Plaatsen:<span>${foutAantal}</span><input name="aantalPlaatsen"
-					value="${aantalPlaatsen}" autofocus></label>
-					<input type="hidden" name="reservatie_id" value="${voorstellingReserveren.id}">
-					<input type="submit" value="Reserveren" id="reserverenknop">
+				<label>Plaatsen:<span>${foutAantal}</span><input
+					name="aantalPlaatsen" value="${aantalPlaatsen}" autofocus
+					type="number" min="1" max="${voorstellingReserveren.vrijePlaatsen}"
+					required></label> <input type="hidden" name="reservatie_id"
+					value="${voorstellingReserveren.id}"> <input type="submit"
+					value="Reserveren" id="reserverenknop">
 			</form>
 		</c:otherwise>
 	</c:choose>
 	<script>
 		document.getElementById("reserverenform").onsubmit = function() {
+			if (!navigator.cookieEnabled) {
+				alert("Dit werkt enkel als cookies aanstaan");
+				return false;
+			}
 			document.getElementById("reserverenknop").disabled = true;
 		};
 	</script>

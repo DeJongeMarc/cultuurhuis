@@ -3,7 +3,7 @@ package be.vdab.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class Voorstelling {
+public class Voorstelling implements Comparable<Voorstelling>{
 	private long id;
 	private String titel;
 	private String uitvoerders;
@@ -67,6 +67,23 @@ public class Voorstelling {
 		this.vrijePlaatsen = vrijePlaatsen;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Voorstelling other = (Voorstelling) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	@Override
+	public int compareTo(Voorstelling v) {
+		return this.datum.compareTo(v.getDatum());
+	}
 	
 
 }

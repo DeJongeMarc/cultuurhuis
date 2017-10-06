@@ -12,5 +12,6 @@
 <header>
 <h1>Het Cultuurhuis: gekozen pagina bestaat niet!   <img alt="fout" src="images/fout.jpg"></h1>
 </header>
+<a href="<c:url value="/index.htm"/>">Terug naar voorstellingen</a>
 </body>
 </html>
