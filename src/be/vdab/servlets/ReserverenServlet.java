@@ -66,8 +66,6 @@ public class ReserverenServlet extends HttpServlet {
 		String reservatieId = request.getParameter("reservatie_id");
 		if (StringUtils.isLong(reservatieId)) {
 			long reservatieIdLong = Long.parseLong(reservatieId);
-			/*Optional<Voorstelling> optionalVoorstelling = voorstellingRepository.read(reservatieIdLong);*/
-			
 			Voorstelling voorstelling = voorstellingRepository.read(reservatieIdLong).get();
 			request.setAttribute("voorstellingReserveren", voorstelling);
 			if (voorstelling != null) {
