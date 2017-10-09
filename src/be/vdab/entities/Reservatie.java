@@ -7,11 +7,14 @@ public class Reservatie {
 	private int plaatsen;
 	public Reservatie() {
 	}
-	public Reservatie(long id, long klantId, long voorstellingsId, int plaatsen) {
-		this.id = id;
+	public Reservatie(long klantId, long voorstellingsId, int plaatsen) {
 		this.klantId = klantId;
 		this.voorstellingsId = voorstellingsId;
 		this.plaatsen = plaatsen;
+	}
+	public Reservatie(long id, long klantId, long voorstellingsId, int plaatsen) {
+		this(klantId, voorstellingsId, plaatsen);
+		setId(id);
 	}
 	public long getId() {
 		return id;

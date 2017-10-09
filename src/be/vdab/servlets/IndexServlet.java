@@ -32,16 +32,15 @@ public class IndexServlet extends HttpServlet {
 		voorstellingRepository.setDataSource(dataSource);
 		}
 
-	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
+		/**HttpSession session = request.getSession();
 		if (session != null) {
 			if (session.getAttribute(MANDJE) != null) {
 				request.setAttribute("mandjeAanwezig", true);
 			}
-		}
+		}*/
 		request.setAttribute("genres", genreRepository.findAll());
 		String genreId = request.getParameter("genre_id");
 		if ( genreId != null) {

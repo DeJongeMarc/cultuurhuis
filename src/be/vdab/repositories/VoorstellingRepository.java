@@ -14,9 +14,9 @@ import be.vdab.entities.Voorstelling;
 
 public class VoorstellingRepository extends AbstractRepository {
 	private static final String BEGIN_SELECT = "select id, titel, uitvoerders, datum, genreId, prijs, vrijePlaatsen from voorstellingen ";
-	private static final String READ = BEGIN_SELECT  + "where id = ? and datum >= {fn now()}";
+	private static final String READ = BEGIN_SELECT + "where id = ? and datum >= {fn now()}";
 	private static final String UPDATE = "update voorstellingen set vrijeplaatsen = vrijeplaatsen - ? where id = ? and datum >= {fn now()} and vrijePlaatsen >= ?";
-	private static final String FIND_BY_GENRE = BEGIN_SELECT+ "where genreid = ? and datum >= {fn now()} order by datum";
+	private static final String FIND_BY_GENRE = BEGIN_SELECT + "where genreid = ? and datum >= {fn now()} order by datum";
 	private final static Logger LOGGER = Logger.getLogger(GenreRepository.class.getName());
 
 	public Optional<Voorstelling> read(long id) {
@@ -40,21 +40,25 @@ public class VoorstellingRepository extends AbstractRepository {
 			throw new RepositoryException(ex);
 		}
 	}
-	
+
 	public Optional<Voorstelling> update(long id, int aantalPlaatsen) {
 		try (Connection connection = dataSource.getConnection();
-				PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+				PreparedStatement statementUpdate = connection.prepareStatement(UPDATE);
+				PreparedStatement statementSelect = connection.prepareStatement(READ)) {
 			Optional<Voorstelling> voorstelling;
+			voorstelling = Optional.empty();
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			connection.setAutoCommit(false);
-			statement.setInt(1, aantalPlaatsen);
-			statement.setLong(2, id);
-			statement.setInt(3, aantalPlaatsen);
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					voorstelling = Optional.of(resultSetRijNaarVoorstelling(resultSet));
-				} else {
-					voorstelling = Optional.empty();
+			statementUpdate.setInt(1, aantalPlaatsen);
+			statementUpdate.setLong(2, id);
+			statementUpdate.setInt(3, aantalPlaatsen);
+			int updateGelukt = statementUpdate.executeUpdate();
+			if (updateGelukt != 0) {
+				statementSelect.setLong(1, id);
+				try (ResultSet resultSet = statementSelect.executeQuery()) {
+					if (resultSet.next()) {
+						voorstelling = Optional.of(resultSetRijNaarVoorstelling(resultSet));
+					}
 				}
 			}
 			connection.commit();
@@ -64,7 +68,7 @@ public class VoorstellingRepository extends AbstractRepository {
 			throw new RepositoryException(ex);
 		}
 	}
-	
+
 	public List<Voorstelling> findByGenre(long genreid) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(FIND_BY_GENRE)) {
@@ -87,8 +91,8 @@ public class VoorstellingRepository extends AbstractRepository {
 
 	private Voorstelling resultSetRijNaarVoorstelling(ResultSet resultSet) throws SQLException {
 		Voorstelling voorstelling = new Voorstelling(resultSet.getLong("id"), resultSet.getString("titel"),
-				resultSet.getString("uitvoerders"), resultSet.getTimestamp("datum").toLocalDateTime(), resultSet.getLong("genreId"),
-				resultSet.getBigDecimal("prijs"), resultSet.getInt("vrijePlaatsen"));
+				resultSet.getString("uitvoerders"), resultSet.getTimestamp("datum").toLocalDateTime(),
+				resultSet.getLong("genreId"), resultSet.getBigDecimal("prijs"), resultSet.getInt("vrijePlaatsen"));
 		return voorstelling;
 	}
 }
