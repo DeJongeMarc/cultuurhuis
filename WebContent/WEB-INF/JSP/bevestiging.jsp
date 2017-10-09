@@ -13,11 +13,11 @@
 	<vdab:header title='bevestiging reservaties' image='bevestig' />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
 	<c:choose>
-		<c:when test="${mandjeAanwezig}">
+		<c:when test="${not empty mandje}">
 			<a href="<c:url value="/reservatiemandje.htm"/>">Reservatiemandje</a>
 			<h2>Stap 1: wie ben je ?</h2>
 			<c:choose>
-				<c:when test="${empty klant}">
+				<c:when test="${empty gebruiker}">
 					<form method="post">
 						<label>Gebruikersnaam:<span>${fouten.gebruikersnaam}</span><input
 							name="gebruikersnaam" value="${param.gebruikersnaam}" autofocus required></label> <label>Paswoord:<span>${fouten.paswoord}</span><input

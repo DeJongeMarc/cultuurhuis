@@ -15,6 +15,7 @@ import be.vdab.entities.Voorstelling;
 public class VoorstellingRepository extends AbstractRepository {
 	private static final String BEGIN_SELECT = "select id, titel, uitvoerders, datum, genreId, prijs, vrijePlaatsen from voorstellingen ";
 	private static final String READ = BEGIN_SELECT  + "where id = ? and datum >= {fn now()}";
+	private static final String UPDATE = "update voorstellingen set vrijeplaatsen = vrijeplaatsen - ? where id = ? and datum >= {fn now()} and vrijePlaatsen >= ?";
 	private static final String FIND_BY_GENRE = BEGIN_SELECT+ "where genreid = ? and datum >= {fn now()} order by datum";
 	private final static Logger LOGGER = Logger.getLogger(GenreRepository.class.getName());
 
@@ -25,6 +26,30 @@ public class VoorstellingRepository extends AbstractRepository {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			connection.setAutoCommit(false);
 			statement.setLong(1, id);
+			try (ResultSet resultSet = statement.executeQuery()) {
+				if (resultSet.next()) {
+					voorstelling = Optional.of(resultSetRijNaarVoorstelling(resultSet));
+				} else {
+					voorstelling = Optional.empty();
+				}
+			}
+			connection.commit();
+			return voorstelling;
+		} catch (SQLException ex) {
+			LOGGER.log(Level.SEVERE, "Probleem met database cultuurhuis", ex);
+			throw new RepositoryException(ex);
+		}
+	}
+	
+	public Optional<Voorstelling> update(long id, int aantalPlaatsen) {
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+			Optional<Voorstelling> voorstelling;
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			connection.setAutoCommit(false);
+			statement.setInt(1, aantalPlaatsen);
+			statement.setLong(2, id);
+			statement.setInt(3, aantalPlaatsen);
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					voorstelling = Optional.of(resultSetRijNaarVoorstelling(resultSet));
