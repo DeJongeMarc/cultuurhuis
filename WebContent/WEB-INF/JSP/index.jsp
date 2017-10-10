@@ -25,10 +25,7 @@
 		</ul>
 	</nav>
 	<c:choose>
-		<c:when test="${not empty fout}">
-			<div class='fout'>${fout}</div>
-		</c:when>
-		<c:when test="${not empty genre}">
+		<c:when test="${not empty genre and empty fout}">
 			<h2>
 				<c:out value='${genre.naam} ' />
 				voorstellingen
@@ -65,6 +62,9 @@
 				</c:otherwise>
 			</c:choose>
 		</c:when>
+		<c:otherwise>
+		<div class='fout'>${fout}</div>
+		</c:otherwise>
 	</c:choose>
 </body>
 </html>

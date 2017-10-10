@@ -47,7 +47,6 @@ public class BevestigingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		HttpSession session = request.getSession();
 		String gebruikersnaam = request.getParameter("gebruikersnaam").trim();
 		String paswoord = request.getParameter("paswoord").trim();
 		Map<String, String> fouten = new HashMap<>();
@@ -63,6 +62,7 @@ public class BevestigingServlet extends HttpServlet {
 			Klant klant = (Klant) request.getAttribute("klant");
 			if (klant != null) {
 				if (klant.getPaswoord().equals(paswoord) & klant.getGebruikersnaam().equals(gebruikersnaam)) {
+					HttpSession session = request.getSession();
 					session.setAttribute(GEBRUIKER, klant.getGebruikersnaam());
 				} else {
 					fouten.put("klant", "Verkeerde gebruikersnaam of paswoord.");

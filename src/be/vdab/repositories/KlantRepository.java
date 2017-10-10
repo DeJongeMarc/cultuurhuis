@@ -13,7 +13,7 @@ import be.vdab.entities.Klant;
 
 public class KlantRepository extends AbstractRepository {
 	private static final String BEGIN_SELECT = "select id, voornaam, familienaam, straat, huisnr, postcode, gemeente, gebruikersnaam, paswoord from klanten ";
-	private static final String FIND_BY_GEBRUIKERSNAAM = BEGIN_SELECT + "where gebruikersnaam=?";
+	private static final String FIND_BY_GEBRUIKERSNAAM = BEGIN_SELECT + "where gebruikersnaam = ?";
 	private static final String CREATE = "insert into klanten(voornaam, familienaam, straat, huisnr, postcode, gemeente, gebruikersnaam, paswoord) values (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final static Logger LOGGER = Logger.getLogger(GenreRepository.class.getName());
 

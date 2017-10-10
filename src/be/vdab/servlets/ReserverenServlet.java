@@ -24,7 +24,7 @@ import be.vdab.utils.StringUtils;
 public class ReserverenServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/reserveren.jsp";
-	private static final String REDIRECT_URL ="/reservatiemandje.htm";
+	private static final String REDIRECT_URL = "/reservatiemandje.htm";
 	private static final String MANDJE = "mandje";
 	private final transient VoorstellingRepository voorstellingRepository = new VoorstellingRepository();
 
@@ -39,21 +39,24 @@ public class ReserverenServlet extends HttpServlet {
 		String voorstellingId = request.getParameter("voorstelling_id");
 		if (StringUtils.isLong(voorstellingId)) {
 			long voorstellingIdLong = Long.parseLong(voorstellingId);
-			voorstellingRepository.read(voorstellingIdLong).ifPresent(voorstelling -> request.setAttribute("voorstellingReserveren", voorstelling));;
-			HttpSession session = request.getSession(false);
+			voorstellingRepository.read(voorstellingIdLong)
+					.ifPresent(voorstelling -> request.setAttribute("voorstellingReserveren", voorstelling));
 			Voorstelling voorstelling = (Voorstelling) request.getAttribute("voorstellingReserveren");
-			if (session != null && voorstelling != null) {
-				@SuppressWarnings("unchecked")
-				Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-				if (mandje != null) {
-					if (mandje.get(voorstelling.getId()) != null) {
-						int plaatsen = mandje.get(voorstelling.getId());
-						request.setAttribute("aantalPlaatsen", plaatsen);
+			if (voorstelling != null) {
+				HttpSession session = request.getSession(false);
+				if (session != null) {
+					@SuppressWarnings("unchecked")
+					Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+					if (mandje != null) {
+						if (mandje.get(voorstelling.getId()) != null) {
+							int plaatsen = mandje.get(voorstelling.getId());
+							request.setAttribute("aantalPlaatsen", plaatsen);
+						}
 					}
 				}
 			}
 		} else {
-			request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
+			request.setAttribute("foutId", true);
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
@@ -66,8 +69,9 @@ public class ReserverenServlet extends HttpServlet {
 		String reservatieId = request.getParameter("reservatie_id");
 		if (StringUtils.isLong(reservatieId)) {
 			long reservatieIdLong = Long.parseLong(reservatieId);
-			Voorstelling voorstelling = voorstellingRepository.read(reservatieIdLong).get();
-			request.setAttribute("voorstellingReserveren", voorstelling);
+			voorstellingRepository.read(reservatieIdLong)
+					.ifPresent(voorstelling -> request.setAttribute("voorstellingReserveren", voorstelling));
+			Voorstelling voorstelling = (Voorstelling) request.getAttribute("voorstellingReserveren");
 			if (voorstelling != null) {
 				if (StringUtils.isInteger(aantalPlaatsen)) {
 					int aantalPlaatsenInt = Integer.parseInt(aantalPlaatsen);
@@ -82,21 +86,23 @@ public class ReserverenServlet extends HttpServlet {
 						session.setAttribute(MANDJE, mandje);
 						response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
 					} else {
-						request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
+						request.setAttribute("foutAantal",
+								"Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
 						request.getRequestDispatcher(VIEW).forward(request, response);
 					}
-					
+
 				} else {
-					request.setAttribute("foutAantal", "Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
+					request.setAttribute("foutAantal",
+							"Tik een getal tussen 1 en " + String.valueOf(voorstelling.getVrijePlaatsen()));
 					request.getRequestDispatcher(VIEW).forward(request, response);
-			}
-			
+				}
+
 			} else {
-				request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
+				request.setAttribute("foutId", true);
 				request.getRequestDispatcher(VIEW).forward(request, response);
 			}
 		} else {
-			request.setAttribute("foutId", "Gekozen voorstelling is niet correct, kies een andere voorstelling.");
+			request.setAttribute("foutId", true);
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
 	}

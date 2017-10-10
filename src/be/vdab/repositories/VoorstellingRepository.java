@@ -69,13 +69,13 @@ public class VoorstellingRepository extends AbstractRepository {
 		}
 	}
 
-	public List<Voorstelling> findByGenre(long genreid) {
+	public List<Voorstelling> findByGenre(long genreId) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement statement = connection.prepareStatement(FIND_BY_GENRE)) {
 			List<Voorstelling> voorstellingen = new ArrayList<>();
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			connection.setAutoCommit(false);
-			statement.setLong(1, genreid);
+			statement.setLong(1, genreId);
 			try (ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
 					voorstellingen.add(resultSetRijNaarVoorstelling(resultSet));

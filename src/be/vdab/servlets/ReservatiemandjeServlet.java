@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 import be.vdab.entities.Voorstelling;
 import be.vdab.repositories.VoorstellingRepository;
+import be.vdab.utils.StringUtils;
 
 /**
  * Servlet implementation class ReservatiemandjeServlet
@@ -36,31 +37,32 @@ public class ReservatiemandjeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		if (session != null) {
-			@SuppressWarnings("unchecked")
-			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-			if (mandje != null) {
-				String[] verwijderdeIds = request.getParameterValues("verwijderd_Id");
-				if (verwijderdeIds != null) {
-					for (String verwijderdId : verwijderdeIds) {
+		@SuppressWarnings("unchecked")
+		Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
+		if (mandje != null) {
+			String[] verwijderdeIds = request.getParameterValues("verwijderd_Id");
+			if (verwijderdeIds != null) {
+				for (String verwijderdId : verwijderdeIds) {
+					if (StringUtils.isLong(verwijderdId)) {
 						long verwijderdIdLong = Long.parseLong(verwijderdId);
 						mandje.remove(verwijderdIdLong);
 						if (mandje.isEmpty()) {
-						session.removeAttribute(MANDJE);	
+							session.removeAttribute(MANDJE);
 						}
 					}
 				}
-				request.setAttribute("reservatieMandje", mandje);
-				Set<Voorstelling> voorstellingen = new TreeSet<>();
-				BigDecimal teBetalen = BigDecimal.ZERO;
-				for (long eenVoorstellingId : mandje.keySet()) {
-					Voorstelling voorstelling = voorstellingRepository.read(eenVoorstellingId).get();
-					voorstellingen.add(voorstelling);
-					teBetalen = voorstelling.getPrijs().multiply(BigDecimal.valueOf(mandje.get(eenVoorstellingId))).add(teBetalen);
-				}
-				request.setAttribute("voorstellingenReservatie", voorstellingen);
-				request.setAttribute("teBetalen", teBetalen);
 			}
+			request.setAttribute("reservatieMandje", mandje);
+			Set<Voorstelling> voorstellingen = new TreeSet<>();
+			BigDecimal teBetalen = BigDecimal.ZERO;
+			for (long eenVoorstellingId : mandje.keySet()) {
+				Voorstelling voorstelling = voorstellingRepository.read(eenVoorstellingId).get();
+				voorstellingen.add(voorstelling);
+				teBetalen = voorstelling.getPrijs().multiply(BigDecimal.valueOf(mandje.get(eenVoorstellingId)))
+						.add(teBetalen);
+			}
+			request.setAttribute("voorstellingenReservatie", voorstellingen);
+			request.setAttribute("teBetalen", teBetalen);
 		}
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}

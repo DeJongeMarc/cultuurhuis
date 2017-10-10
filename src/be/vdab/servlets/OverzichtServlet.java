@@ -40,15 +40,22 @@ public class OverzichtServlet extends HttpServlet {
 		voorstellingRepository.setDataSource(dataSource);
 		reservatieRepository.setDataSource(dataSource);
 	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher(VIEW).forward(request, response);
+		
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if (session.getAttribute(MANDJE) != null & session.getAttribute(GEBRUIKER) != null) {
 			@SuppressWarnings("unchecked")
 			Map<Long, Integer> mandje = (Map<Long, Integer>) session.getAttribute(MANDJE);
-			request.setAttribute("mandje", mandje);
+			request.setAttribute("overzichtmandje", mandje);
 			String gebuirkersnaam = (String) session.getAttribute(GEBRUIKER);
 			Klant klant = klantRepository.findByGebruikersnaam(gebuirkersnaam).get();
 			List<Voorstelling> gelukteReserveringen = mandje.entrySet().stream()

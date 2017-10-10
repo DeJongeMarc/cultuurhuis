@@ -70,9 +70,8 @@ public class NieuweKlantServlet extends HttpServlet {
 					Klant klant = new Klant(parameters.get("voornaam"), parameters.get("familienaam"),
 							parameters.get("straat"), parameters.get("huisnr"), parameters.get("postcode"),
 							parameters.get("gemeente"), parameters.get("gebruikersnaam"), parameters.get("paswoord"));
-					session.setAttribute(GEBRUIKER, klant.getGebruikersnaam());
 					klantRepository.create(klant);
-					
+					session.setAttribute(GEBRUIKER, klant.getGebruikersnaam());
 					response.sendRedirect(response.encodeRedirectURL(request.getContextPath() + REDIRECT_URL));
 				} else {
 					fouten.add("Er is al een gebruiker aangemeld, zie Bevestiging reservatie");

@@ -13,8 +13,10 @@
 	<vdab:header image="bevestig" title="overzicht" />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
 	<c:choose>
-		<c:when test="${not empty mandje}">
+		<c:when test="${not empty overzichtmandje and not empty gebruiker}">
 			<h2>Gelukte reserveringen</h2>
+			<c:choose>
+			<c:when test="${not empty gelukteReserveringen}">
 			<table>
 				<tr>
 					<th>Datum</th>
@@ -33,7 +35,14 @@
 					</tr>
 				</c:forEach>
 			</table>
+			</c:when>
+			<c:otherwise>
+			<p>U hebt geen gelukte reservaties.</p>
+			</c:otherwise>
+			</c:choose>
 			<h2>Mislukte reserveringen</h2>
+			<c:choose>
+			<c:when test="${not empty mislukteReserveringen}">
 			<table>
 				<tr>
 					<th>Datum</th>
@@ -54,9 +63,14 @@
 					</tr>
 				</c:forEach>
 			</table>
+			</c:when>
+			<c:otherwise>
+			<p>Al uw reserveringen zijn gelukt</p>
+			</c:otherwise>
+			</c:choose>
 		</c:when>
 		<c:otherwise>
-			<p>U hebt nog geen reservaties, kies een voorstelling.</p>
+			<p>U hebt nog geen reservaties of bent nog niet aangemeld als gebruiker.</p>
 		</c:otherwise>
 	</c:choose>
 </body>

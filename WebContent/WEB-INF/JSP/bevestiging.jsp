@@ -18,7 +18,7 @@
 			<h2>Stap 1: wie ben je ?</h2>
 			<c:choose>
 				<c:when test="${empty gebruiker}">
-					<form method="post">
+					<form method="post" id="gebruikerzoekenform">
 						<label>Gebruikersnaam:<span>${fouten.gebruikersnaam}</span><input
 							name="gebruikersnaam" value="${param.gebruikersnaam}" autofocus required></label> <label>Paswoord:<span>${fouten.paswoord}</span><input
 							name="paswoord" type="password" required></label> <input type="submit"
@@ -39,7 +39,7 @@
 					<c:out
 						value="${klant.voornaam} ${klant.familienaam} ${klant.straat} ${klant.huisnr} ${klant.postcode} ${klant.gemeente}"></c:out>
 					<h2>Stap 2: Bevestigen</h2>
-					<form action="<c:url value ="/overzicht.htm"/>">
+					<form method="post" action="<c:url value ="/overzicht.htm"/>" id="bevestigingform">
 					<input type="submit" value="Bevestigen" id="bevestigknop">
 					</form>
 				</c:otherwise>
@@ -49,5 +49,21 @@
 			<p>U hebt nog geen reservaties, kies een voorstelling.</p>
 		</c:otherwise>
 	</c:choose>
+	<script>
+		document.getElementById("bevestigingform").onsubmit = function() {
+			if (!navigator.cookieEnabled) {
+				alert("Dit werkt enkel als cookies aanstaan");
+				return false;
+			}
+			document.getElementById("bevestigingknop").disabled = true;
+		};
+		document.getElementById("gebruikerzoekenform").onsubmit = function() {
+			if (!navigator.cookieEnabled) {
+				alert("Dit werkt enkel als cookies aanstaan");
+				return false;
+			}
+			document.getElementById("zoekknop").disabled = true;
+		};
+	</script>
 </body>
 </html>

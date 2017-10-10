@@ -22,7 +22,7 @@
 					<p>U bent al aangemeld als klant, zie bevestiging Reservatie!</p>
 				</c:when>
 				<c:otherwise>
-					<form method="post">
+					<form method="post" id="nieuweklantform">
 						<label>Voornaam:<input name="voornaam"
 							value="${param.voornaam}"></label> <label>Familienaam:<input
 							name="familienaam" value="${param.familienaam}"></label> <label>Straat:<input
@@ -47,5 +47,14 @@
 			<p>U hebt nog geen reservaties, kies een voorstelling.</p>
 		</c:otherwise>
 	</c:choose>
+	<script>
+		document.getElementById("nieuweklantform").onsubmit = function() {
+			if (!navigator.cookieEnabled) {
+				alert("Dit werkt enkel als cookies aanstaan");
+				return false;
+			}
+			document.getElementById("okknop").disabled = true;
+		};
+	</script>
 </body>
 </html>

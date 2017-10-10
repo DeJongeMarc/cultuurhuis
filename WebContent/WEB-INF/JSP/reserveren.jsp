@@ -12,11 +12,12 @@
 <body>
 	<vdab:header image="reserveren" title="reserveren" />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
+	<c:if test="${not empty mandje}">
+	<a href="<c:url value="/reservatiemandje.htm"/>">Reservatiemandje</a>
+	<a href="<c:url value="/bevestiging.htm"/>">Bevestiging reservatie</a>
+	</c:if>
 	<c:choose>
-		<c:when test="${not empty foutId}">
-			<div class='fout'>${foutId}</div>
-		</c:when>
-		<c:when test="${empty voorstellingReserveren}">
+		<c:when test="${empty voorstellingReserveren or foutId}">
 			<div class='fout'>Geen voorstellingen beschikbaar, kies een
 				andere voorstelling.</div>
 		</c:when>

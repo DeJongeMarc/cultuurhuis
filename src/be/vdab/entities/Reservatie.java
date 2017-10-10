@@ -5,8 +5,7 @@ public class Reservatie {
 	private long klantId;
 	private long voorstellingsId;
 	private int plaatsen;
-	public Reservatie() {
-	}
+	
 	public Reservatie(long klantId, long voorstellingsId, int plaatsen) {
 		this.klantId = klantId;
 		this.voorstellingsId = voorstellingsId;

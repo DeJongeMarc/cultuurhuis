@@ -12,8 +12,6 @@ public class Voorstelling implements Comparable<Voorstelling>{
 	private BigDecimal prijs;
 	private int vrijePlaatsen;
 	
-	public Voorstelling() {
-	}
 	public Voorstelling(long id, String titel, String uitvoerders, LocalDateTime datum, long genreId, BigDecimal prijs,
 			int vrijePlaatsen) {
 		this.id = id;
@@ -84,6 +82,4 @@ public class Voorstelling implements Comparable<Voorstelling>{
 	public int compareTo(Voorstelling v) {
 		return this.datum.compareTo(v.getDatum());
 	}
-	
-
 }

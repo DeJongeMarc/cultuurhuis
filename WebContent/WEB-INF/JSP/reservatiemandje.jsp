@@ -46,7 +46,7 @@
 			</p>
 		</c:when>
 		<c:otherwise>
-			<div class='fout'>U hebt geen voorstellingen gereserveerd, kies
+			<div class='fout'>Uw mandje is leeg, kies
 				een voorstelling.</div>
 		</c:otherwise>
 	</c:choose>

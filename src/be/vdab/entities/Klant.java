@@ -10,8 +10,7 @@ public class Klant {
 	private String gemeente;
 	private String gebruikersnaam;
 	private String paswoord;
-	public Klant() {
-	}
+	
 	public Klant(String voornaam, String familienaam, String straat, String huisnr, String postcode,
 			String gemeente, String gebruikersnaam, String paswoord) {
 		this.voornaam = voornaam;
@@ -82,5 +81,4 @@ public class Klant {
 	public void setPaswoord(String paswoord) {
 		this.paswoord = paswoord;
 	}
-
 }
