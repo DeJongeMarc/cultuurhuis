@@ -1,14 +1,10 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<title>Cultuurhuis</title>
-<link rel='icon' href='images/favicon.ico'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<link rel='stylesheet' href='styles/default.css'>
-</head>
+<vdab:head title="Cultuurhuis"/>
 <body>
 	<vdab:header title='voorstellingen' image='voorstellingen' />
 	<c:if test="${not empty mandje}">
@@ -43,11 +39,12 @@
 						</tr>
 						<c:forEach var='voorstelling' items='${genreVoorstellingen}'>
 							<tr>
-								<td><c:out value='${voorstelling.datum}' /></td>
+							<fmt:parseDate value="${voorstelling.datum}" pattern="yyyy-MM-dd" var="datum"/> 
+								<td><fmt:formatDate value="${datum}" type="both"/></td>
 								<td><c:out value='${voorstelling.titel}' /></td>
 								<td><c:out value='${voorstelling.uitvoerders}' /></td>
 								<td><c:out value='€${voorstelling.prijs}' /></td>
-								<td><c:out value='${voorstelling.vrijePlaatsen}' /></td>
+								<td class="rechts"><c:out value='${voorstelling.vrijePlaatsen}'/></td>
 								<c:if test="${voorstelling.vrijePlaatsen > 0}">
 									<td><a
 										href="<c:url value='/reserveren.htm'><c:param name='voorstelling_id' value='${voorstelling.id}'/></c:url>">Reserveren</a></td>

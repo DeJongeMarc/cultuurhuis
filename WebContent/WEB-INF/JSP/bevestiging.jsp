@@ -3,12 +3,7 @@
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<title>Cultuurhuis</title>
-<link rel='icon' href='images/favicon.ico'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<link rel='stylesheet' href='styles/default.css'>
-</head>
+<vdab:head title="Bevestiging"/>
 <body>
 	<vdab:header title='bevestiging reservaties' image='bevestig' />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>

@@ -3,12 +3,7 @@
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<title>Overzicht</title>
-<link rel='icon' href='images/favicon.ico'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<link rel='stylesheet' href='styles/default.css'>
-</head>
+<vdab:head title="Overzicht"/>
 <body>
 	<vdab:header image="bevestig" title="overzicht" />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
@@ -31,7 +26,7 @@
 						<td><c:out value='${voorstelling.titel}' /></td>
 						<td><c:out value='${voorstelling.uitvoerders}' /></td>
 						<td><c:out value='€${voorstelling.prijs}' /></td>
-						<td><c:out value='${mandje[voorstelling.id]}' /></td>
+						<td class="rechts"><c:out value='${overzichtmandje[voorstelling.id]}' /></td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -58,8 +53,8 @@
 						<td><c:out value='${voorstelling.titel}' /></td>
 						<td><c:out value='${voorstelling.uitvoerders}' /></td>
 						<td><c:out value='€${voorstelling.prijs}' /></td>
-						<td><c:out value='${mandje[voorstelling.id]}' /></td>
-						<td><c:out value='${voorstelling.vrijePlaatsen}' /></td>
+						<td class="rechts"><c:out value='${overzichtmandje[voorstelling.id]}' /></td>
+						<td class="rechts"><c:out value='${voorstelling.vrijePlaatsen}' /></td>
 					</tr>
 				</c:forEach>
 			</table>

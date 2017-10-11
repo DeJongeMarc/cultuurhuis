@@ -3,12 +3,7 @@
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <!DOCTYPE html>
 <html lang="nl">
-<head>
-<title>Reservatiemandje</title>
-<link rel='icon' href='images/favicon.ico'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<link rel='stylesheet' href='styles/default.css'>
-</head>
+<vdab:head title="Reservatiemandje"/>
 <body>
 	<vdab:header image="mandje" title="reservatiemandje" />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
@@ -33,7 +28,7 @@
 							<td><c:out value='${voorstelling.titel}' /></td>
 							<td><c:out value='${voorstelling.uitvoerders}' /></td>
 							<td><c:out value='€${voorstelling.prijs}' /></td>
-							<td><c:out value='${reservatieMandje[voorstelling.id]}' /></td>
+							<td class="rechts"><c:out value='${reservatieMandje[voorstelling.id]}' /></td>
 							<td><input type="checkbox" name="verwijderd_Id"
 								value="${voorstelling.id}"></td>
 						</tr>

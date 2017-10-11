@@ -60,6 +60,13 @@ input:focus,textarea:focus,select:focus {
 
 input[type='checkbox'] {
 	display: inline;
+	
+}
+
+td input[type="checkbox"] {
+    float: left;
+    margin: 0 auto;
+    width: 100%;
 }
 
 nav ul {
@@ -104,4 +111,28 @@ ul.zebra li:nth-child(even) {
 
 ul.zebra li:nth-child(odd):hover, ul.zebra li:nth-child(even):hover {
 	background-color: #ccff00;
+}
+
+li {
+	list-style-type: square;
+}
+
+table {
+	border-collapse: separate;
+	border-spacing: 0.2em 0.3em;
+	empty-cells: show;
+}
+
+table tr:nth-child(odd) {
+	background-color: #E6E6C8;
+}
+
+table tr:nth-child(even) {
+	background-color: #F2F2E4;
+}
+th {
+	text-align: center;
+}
+td.rechts {
+	text-align: right;
 }
