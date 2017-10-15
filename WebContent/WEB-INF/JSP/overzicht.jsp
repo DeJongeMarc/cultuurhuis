@@ -1,6 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
 <!DOCTYPE html>
 <html lang="nl">
 <vdab:head title="Overzicht"/>
@@ -17,15 +18,16 @@
 					<th>Datum</th>
 					<th>Titel</th>
 					<th>Uitvoerders</th>
-					<th>Prijs</th>
+					<th>Prijs(€)</th>
 					<th>Plaatsen</th>
 				</tr>
 				<c:forEach var='voorstelling' items='${gelukteReserveringen}'>
 					<tr>
-						<td><c:out value='${voorstelling.datum}' /></td>
+						<td><fmt:parseDate value="${voorstelling.datum}" pattern="yyyy-MM-dd'T'HH:mm" var="datumVoorstelling"/>
+								<fmt:formatDate value="${datumVoorstelling}" type="both" dateStyle="short" timeStyle="short"/></td>
 						<td><c:out value='${voorstelling.titel}' /></td>
 						<td><c:out value='${voorstelling.uitvoerders}' /></td>
-						<td><c:out value='€${voorstelling.prijs}' /></td>
+						<td class="rechts"><c:out value='${voorstelling.prijs}' /></td>
 						<td class="rechts"><c:out value='${overzichtmandje[voorstelling.id]}' /></td>
 					</tr>
 				</c:forEach>
@@ -43,16 +45,17 @@
 					<th>Datum</th>
 					<th>Titel</th>
 					<th>Uitvoerders</th>
-					<th>Prijs</th>
+					<th>Prijs(€)</th>
 					<th>Plaatsen</th>
 					<th>VrijePlaatsen</th>
 				</tr>
 				<c:forEach var='voorstelling' items='${mislukteReserveringen}'>
 					<tr>
-						<td><c:out value='${voorstelling.datum}' /></td>
+						<td><fmt:parseDate value="${voorstelling.datum}" pattern="yyyy-MM-dd'T'HH:mm" var="datumVoorstelling"/>
+								<fmt:formatDate value="${datumVoorstelling}" type="both" dateStyle="short" timeStyle="short"/></td>
 						<td><c:out value='${voorstelling.titel}' /></td>
 						<td><c:out value='${voorstelling.uitvoerders}' /></td>
-						<td><c:out value='€${voorstelling.prijs}' /></td>
+						<td class="rechts"><c:out value='${voorstelling.prijs}' /></td>
 						<td class="rechts"><c:out value='${overzichtmandje[voorstelling.id]}' /></td>
 						<td class="rechts"><c:out value='${voorstelling.vrijePlaatsen}' /></td>
 					</tr>

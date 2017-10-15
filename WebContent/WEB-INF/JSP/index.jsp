@@ -39,8 +39,10 @@
 						</tr>
 						<c:forEach var='voorstelling' items='${genreVoorstellingen}'>
 							<tr>
-							<fmt:parseDate value="${voorstelling.datum}" pattern="yyyy-MM-dd" var="datum"/> 
-								<td><fmt:formatDate value="${datum}" type="both"/></td>
+								<td>
+								<fmt:parseDate value="${voorstelling.datum}" pattern="yyyy-MM-dd'T'HH:mm" var="datumVoorstelling"/>
+								<fmt:formatDate value="${datumVoorstelling}" type="both" dateStyle="short" timeStyle="short"/>
+								</td>
 								<td><c:out value='${voorstelling.titel}' /></td>
 								<td><c:out value='${voorstelling.uitvoerders}' /></td>
 								<td><c:out value='€${voorstelling.prijs}' /></td>

@@ -1,9 +1,10 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
 <!DOCTYPE html>
 <html lang="nl">
-<vdab:head title="Reservatiemandje"/>
+<vdab:head title="Reservatiemandje" />
 <body>
 	<vdab:header image="mandje" title="reservatiemandje" />
 	<a href="<c:url value="/index.htm"/>">Voorstellingen</a>
@@ -24,11 +25,15 @@
 					</tr>
 					<c:forEach var="voorstelling" items="${voorstellingenReservatie}">
 						<tr>
-							<td><c:out value='${voorstelling.datum}' /></td>
+							<td><fmt:parseDate value="${voorstelling.datum}"
+									pattern="yyyy-MM-dd'T'HH:mm" var="datumVoorstelling" /> <fmt:formatDate
+									value="${datumVoorstelling}" type="both" dateStyle="short"
+									timeStyle="short" /></td>
 							<td><c:out value='${voorstelling.titel}' /></td>
 							<td><c:out value='${voorstelling.uitvoerders}' /></td>
 							<td><c:out value='€${voorstelling.prijs}' /></td>
-							<td class="rechts"><c:out value='${reservatieMandje[voorstelling.id]}' /></td>
+							<td class="rechts"><c:out
+									value='${reservatieMandje[voorstelling.id]}' /></td>
 							<td><input type="checkbox" name="verwijderd_Id"
 								value="${voorstelling.id}"></td>
 						</tr>
@@ -41,8 +46,7 @@
 			</p>
 		</c:when>
 		<c:otherwise>
-			<div class='fout'>Uw mandje is leeg, kies
-				een voorstelling.</div>
+			<div class='fout'>Uw mandje is leeg, kies een voorstelling.</div>
 		</c:otherwise>
 	</c:choose>
 	<script>

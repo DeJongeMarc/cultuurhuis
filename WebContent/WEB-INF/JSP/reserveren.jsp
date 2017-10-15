@@ -1,6 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri='http://vdab.be/tags' prefix='vdab'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@taglib prefix='fmt' uri='http://java.sun.com/jsp/jstl/fmt'%>
 <!DOCTYPE html>
 <html lang="nl">
 <vdab:head title="Reserveren"/>
@@ -22,7 +23,8 @@
 			<p>Uitvoerders:</p>
 			<c:out value='${voorstellingReserveren.uitvoerders}' />
 			<p>Datum:</p>
-			<c:out value='${voorstellingReserveren.datum}' />
+			<fmt:parseDate value="${voorstellingReserveren.datum}" pattern="yyyy-MM-dd'T'HH:mm" var="datumVoorstelling"/>
+			<fmt:formatDate value="${datumVoorstelling}" type="both" dateStyle="short" timeStyle="short"/>
 			<p>Prijs:</p>
 			<c:out value='€${voorstellingReserveren.prijs}' />
 			<p>Vrije plaatsen:</p>
